@@ -78,3 +78,117 @@
 .trainerGuide .guideTwoCol{grid-template-columns:1fr 1fr}.activeTaskList,.recommendList,.feedbackList,.notificationList{padding:0 17px}.activeTaskList article{display:flex;justify-content:space-between;padding:15px 0;border-bottom:1px solid #edf0ee}.activeTaskList p{display:flex;flex-direction:column;margin:0}.activeTaskList b{font-size:8px}.activeTaskList span,.activeTaskList small{font-size:7px;color:#77818a;margin-top:4px}.activeTaskList small{color:#e56c35}.activeTaskList p:last-child{align-items:end}.activeTaskList a{font-size:7px;color:var(--g);font-weight:700;margin-top:7px}.doubleBars{height:235px;display:flex;align-items:end;gap:15px;padding:28px 30px 30px}.doubleBars>div{flex:1;height:180px;display:flex;align-items:end;gap:4px;position:relative;background:repeating-linear-gradient(to top,#eef1ef 0,#eef1ef 1px,transparent 1px,transparent 55px)}.doubleBars>div>i,.doubleBars>div>em{flex:1;background:var(--g);font-style:normal}.doubleBars>div>em{background:#b9dfc9}.doubleBars>div span{position:absolute;bottom:-20px;width:100%;text-align:center;font-size:6px;color:#7d8790}.recommendList article{display:grid;grid-template-columns:20px 1fr auto;gap:7px;padding:15px 0;border-bottom:1px solid #edf0ee;align-items:start}.recommendList article>i{color:var(--g);font-style:normal}.recommendList p{display:flex;flex-direction:column;margin:0}.recommendList p b{font-size:8px}.recommendList p span,.recommendList p small{font-size:7px;color:#7c8690;margin-top:3px}.recommendList article>em{font-style:normal;font-size:7px;color:var(--g)}.recommendList article>button{grid-column:3;border:0;background:transparent;color:var(--g);font-size:7px}.feedbackList article,.notificationList article{display:grid;grid-template-columns:18px 1fr auto;gap:7px;padding:15px 0;border-bottom:1px solid #edf0ee}.feedbackList article>i,.notificationList article>i{font-style:normal;color:var(--g)}.feedbackList article>i.warn{color:#e94d4d}.feedbackList p,.notificationList p{display:flex;flex-direction:column;margin:0}.feedbackList b,.notificationList b{font-size:8px}.feedbackList span,.notificationList span{font-size:7px;color:#7c8690;margin-top:3px}.notificationList article>em{font-size:7px;color:#7e888f;font-style:normal}.growthCard{background:radial-gradient(circle at 85% 50%,rgba(24,201,102,.28),transparent 30%),linear-gradient(145deg,#003a2a,#00523b);border-radius:9px;color:#fff;padding:28px;display:grid;grid-template-columns:1fr 130px;align-items:center;min-height:300px}.growthCard h2{font-size:20px;line-height:1.22;margin:0 0 24px}.growthCard p{font-size:8px;color:#d2f3df}.growthCard p::first-letter{color:#f8d45a}.growthCard button{background:#0eb663;color:#fff;border:0;border-radius:5px;padding:10px 13px;font-size:8px;margin-top:15px}.awardSeal{width:95px;height:95px;border:12px solid #0a9e5c;background:#0fc56c;border-radius:50%;display:grid;place-items:center;font-size:35px;box-shadow:0 0 0 9px rgba(4,150,83,.28)}
 @media(max-width:1050px){.guidePortal{grid-template-columns:72px 1fr}.guideSide{padding:22px 10px}.guideLogo b,.guideSide nav small,.guideSide nav a{font-size:0}.guideLogo{justify-content:center}.guideSide nav a{justify-content:center}.guideSide nav a i{font-size:14px}.guideKpis.five{grid-template-columns:repeat(3,1fr)}.guideThreeCol{grid-template-columns:1fr 1fr}.guideThreeCol>.guideCard:last-child{grid-column:1/-1}}
 @media(max-width:720px){.guidePortal{grid-template-columns:1fr}.guideSide{position:fixed;bottom:0;z-index:30;width:100%;height:58px;min-height:0;padding:5px}.guideLogo,.guideSide nav section:not(:first-child){display:none}.guideSide nav section{margin:0}.guideSide nav small{display:none}.guideSide nav a{font-size:9px}.guideTop{padding:0 14px}.guideTop label{width:65%;margin:0}.guideTop p{display:none}.guideCanvas{padding:18px 13px 75px}.guideKpis.five{grid-template-columns:1fr 1fr}.guideTwoCol,.trainerGuide .guideTwoCol,.bottomRow{grid-template-columns:1fr}.guideThreeCol{grid-template-columns:1fr}.guideThreeCol>.guideCard:last-child{grid-column:auto}.guideSpecStrip{grid-template-columns:1fr}.guidePageHead h1{font-size:21px}.guidePageHead>button{display:none}.growthCard{grid-template-columns:1fr}.awardSeal{display:none}}
+
+/* Readable dashboard scale and production-grade data visualization */
+.guidePortal{
+  grid-template-columns:236px minmax(0,1fr);
+  font-size:14px;
+  line-height:1.45;
+  letter-spacing:-.01em;
+}
+.guideSide{padding:28px 20px}
+.guideLogo{font-size:20px;margin-bottom:36px}
+.guideSide nav section{margin-bottom:26px}
+.guideSide nav small{font-size:10px;letter-spacing:1px;margin:0 12px 9px;font-weight:700}
+.guideSide nav a{font-size:13px;padding:10px 12px;gap:12px;border-radius:8px}
+.guideSide nav a i{width:18px;font-size:14px}
+.guideTop{height:72px;padding:0 32px}
+.guideTop label{height:40px;font-size:13px}
+.guideTop button{font-size:17px}
+.guideTop>div>span{width:34px;height:34px;font-size:10px}
+.guideTop p b{font-size:12px}
+.guideTop p small{font-size:10px}
+.guideCanvas{padding:34px;max-width:1520px}
+.guidePageHead{margin-bottom:26px}
+.guidePageHead h1{font-size:29px;letter-spacing:-1px}
+.guidePageHead p{font-size:14px;margin:7px 0}
+.guidePageHead>button{font-size:12px;padding:10px 13px}
+.guideKpis{gap:16px;margin-bottom:16px}
+.guideKpis article{padding:20px;min-height:122px;border-radius:12px;box-shadow:0 7px 24px rgba(15,31,23,.035)}
+.guideKpis span{font-size:12px;font-weight:600}
+.guideKpis strong{font-size:25px;margin:15px 0 9px;letter-spacing:-.8px}
+.guideKpis small{font-size:11px}
+.guideTwoCol,.guideThreeCol{gap:16px;margin-bottom:16px}
+.guideCard{border-radius:12px;box-shadow:0 8px 28px rgba(15,31,23,.035)}
+.guideCard>header{padding:20px 22px 11px}
+.guideCard>header h3{font-size:15px;letter-spacing:-.25px}
+.guideCard>header>button{font-size:11px;padding:7px 9px}
+.chartMeta{display:flex;align-items:center;justify-content:space-between;padding:0 22px 2px}
+.chartMeta>p{display:flex;align-items:baseline;gap:9px;margin:0}
+.chartMeta>p b{font-size:20px}
+.chartMeta>p span{font-size:11px;color:var(--g);font-weight:700}
+.chartLegend,.miniLegend{justify-content:flex-start;gap:24px;font-size:11px}
+.chartLegend i,.miniLegend i{width:9px;height:9px;border-radius:50%}
+.guideLineChart{height:320px;margin:8px 22px 22px;padding:18px 20px 36px 52px}
+.guideLineChart.compact{height:230px;margin:8px 20px 20px}
+.lineGrid{left:52px;right:20px;top:18px;bottom:36px;background:repeating-linear-gradient(to bottom,#e8eeea 0,#e8eeea 1px,transparent 1px,transparent 25%)}
+.plot{left:52px;right:20px;top:18px;bottom:36px}
+.areaFill{position:absolute;inset:0;background:linear-gradient(180deg,rgba(19,155,90,.2),rgba(19,155,90,.015));z-index:0}
+.segment{height:3px;z-index:2;box-shadow:0 1px 3px rgba(19,155,90,.14)}
+.segment.soft{height:2px;z-index:1}
+.point{width:8px;height:8px;border:2px solid #fff;transform:translate(-4px,4px);z-index:4;box-shadow:0 0 0 2px var(--g);cursor:help}
+.point:hover::after{content:attr(data-value);position:absolute;left:50%;bottom:16px;transform:translateX(-50%);white-space:nowrap;background:#0e261b;color:#fff;padding:6px 8px;border-radius:6px;font:600 11px/1.2 Inter,"Segoe UI",sans-serif;box-shadow:0 8px 18px rgba(0,0,0,.18)}
+.axis{left:52px;right:20px;bottom:6px;font-size:10px;color:#69757e}
+.yAxis{position:absolute;left:0;top:14px;bottom:32px;width:43px;display:flex;flex-direction:column;justify-content:space-between;text-align:right;color:#7b858e;font-size:10px}
+.donutWrap{padding:20px 24px 28px;gap:30px}
+.guideDonut{width:172px;height:172px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.025)}
+.guideDonut:after{inset:34px}
+.guideDonut small{font-size:11px;color:#737d86}
+.guideDonut b{font-size:22px}
+.donutLegend p{grid-template-columns:13px 1fr auto;font-size:11px;margin:16px 0;gap:6px}
+.donutLegend p i{width:9px;height:9px}
+.guideList{padding:5px 20px}
+.guideList article{min-height:72px;grid-template-columns:20px 1fr auto;gap:9px}
+.guideList article>i{font-size:13px}
+.guideList article p b{font-size:12px}
+.guideList article p span,.guideList article p small{font-size:11px}
+.guideList article>em{font-size:11px}
+.guideTextButton{font-size:12px;margin:11px 20px 17px;width:calc(100% - 40px)}
+.guideTable{padding:7px 20px}
+.guideTable>div{min-height:43px;font-size:11px}
+.guideTable span i{width:25px;height:25px;font-size:8px}
+.guideSpecStrip>div{border-radius:12px;padding:21px}
+.guideSpecStrip h3{font-size:14px}
+.guideSpecStrip p{font-size:11px}
+.guideSpecStrip button{font-size:11px;padding:8px 10px}
+.activeTaskList,.recommendList,.feedbackList,.notificationList{padding:0 20px}
+.activeTaskList article,.recommendList article,.feedbackList article,.notificationList article{padding:18px 0}
+.activeTaskList b,.recommendList p b,.feedbackList b,.notificationList b{font-size:12px}
+.activeTaskList span,.activeTaskList small,.recommendList p span,.recommendList p small,.feedbackList span,.notificationList span{font-size:11px}
+.activeTaskList a,.recommendList article>em,.recommendList article>button,.notificationList article>em{font-size:11px}
+.growthCard h2{font-size:24px}
+.growthCard p{font-size:12px}
+.growthCard button{font-size:12px}
+.chartTotal{font-size:18px;color:var(--ink)}
+.chartTotal small{font-size:10px;color:var(--sub);font-weight:600}
+.weeklyChart{padding:0 22px 22px}
+.weeklyChart .miniLegend{padding:2px 0 12px}
+.weeklyPlot{height:250px;position:relative;padding:10px 4px 28px 44px}
+.barYAxis{position:absolute;left:0;top:6px;bottom:28px;width:34px;display:flex;flex-direction:column;justify-content:space-between;text-align:right;font-size:10px;color:#78838c}
+.barGrid{position:absolute;left:44px;right:4px;top:10px;bottom:28px;background:repeating-linear-gradient(to bottom,#e8eeea 0,#e8eeea 1px,transparent 1px,transparent 25%)}
+.barGroups{position:absolute;left:52px;right:10px;top:10px;bottom:7px;display:flex;align-items:end;gap:14px}
+.barGroup{height:100%;flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:9px}
+.barPair{height:calc(100% - 22px);width:100%;display:flex;align-items:end;justify-content:center;gap:5px}
+.barPair i,.barPair em{width:min(17px,38%);min-height:3px;background:linear-gradient(180deg,#21ad6b,#087a43);border-radius:5px 5px 2px 2px;position:relative;box-shadow:0 4px 10px rgba(19,155,90,.12);cursor:help}
+.barPair em{background:linear-gradient(180deg,#b8e2ca,#75bf95)}
+.barPair i:hover::after,.barPair em:hover::after{content:attr(data-value);position:absolute;left:50%;bottom:calc(100% + 7px);transform:translateX(-50%);white-space:nowrap;background:#0e261b;color:#fff;padding:6px 8px;border-radius:6px;font:600 11px/1.2 Inter,"Segoe UI",sans-serif;z-index:5}
+.barGroup>span{font-size:10px;color:#69757e}
+
+@media(max-width:1050px){
+  .guidePortal{grid-template-columns:78px 1fr}
+  .guideLogo b,.guideSide nav small,.guideSide nav a{font-size:0}
+  .guideSide nav a i{font-size:16px}
+  .guideCanvas{padding:26px}
+}
+@media(max-width:720px){
+  .guidePortal{grid-template-columns:1fr;font-size:13px}
+  .guideSide nav a{font-size:11px}
+  .guideCanvas{padding:20px 14px 76px}
+  .guidePageHead h1{font-size:24px}
+  .guideKpis article{min-height:112px;padding:17px}
+  .guideKpis strong{font-size:22px}
+  .guideLineChart{height:270px;margin-left:12px;margin-right:12px}
+  .donutWrap{flex-direction:column;align-items:flex-start}
+  .guideDonut{align-self:center}
+  .weeklyChart{padding-left:14px;padding-right:14px}
+}

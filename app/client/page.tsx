@@ -1,0 +1,15 @@
+export const metadata = { title: "Client Workspace · Trainora AI" };
+
+export default function ClientPage(){
+  return <main className="portal clientPortal">
+    <aside className="portalSide"><a className="portalBrand" href="/"><i>t</i><span>trainora<b>ai</b></span><em>CLIENT</em></a><nav>{[["Overview","⌂"],["Projects","▣"],["Workforce","◎"],["Tasks","☷"],["Quality","◇"],["Datasets","▤"],["Analytics","↗"],["Billing","$"],["API & integrations","⌘"]].map(([l,i],n)=><a className={n===0?"selected":""} href="#" key={l}><i>{i}</i>{l}</a>)}</nav><a className="profileMini" href="/"><i>NS</i><span><b>Northstar AI</b><small>Enterprise workspace</small></span><em>•••</em></a></aside>
+    <section className="portalMain"><header className="portalTop"><div><small>NORTHSTAR AI</small><h1>Portfolio overview</h1></div><div className="topTools"><label>⌕ <input placeholder="Search projects…"/></label><button>♢<b>2</b></button><a href="#">New project +</a></div></header>
+      <div className="roleContent"><section className="roleHero clientHero"><div><span>CLIENT CONTROL CENTER</span><h2>Your AI data portfolio is on track.</h2><p>Three active projects, 642 verified experts, and 96.9% average reviewer agreement.</p></div><button>Create project →</button></section>
+        <div className="roleKpis">{[["Active projects","3","1 launching next week"],["Tasks delivered","42,680","↑ 12.4% this month"],["Review agreement","96.9%","Above 96% target"],["Approved spend","$284k","68% utilized"]].map(([l,v,n])=><article key={l}><span>{l}</span><b>{v}</b><small>{n}</small></article>)}</div>
+        <div className="clientGrid"><section className="panel clientProjects"><div className="panelHead"><div><small>PROJECT PORTFOLIO</small><h3>Delivery and quality</h3></div><button>Manage projects</button></div>{[["Financial Research Evaluation",78,96.9,"On track","12,400"],["Code Reasoning SFT",84,95.8,"At risk","19,240"],["Medical Factuality Review",47,98.7,"On track","5,280"]].map(([name,progress,quality,status,tasks])=><article key={name as string}><div><i>{String(name).split(" ").map(x=>x[0]).slice(0,2).join("")}</i><p><b>{name}</b><span>{tasks} tasks</span></p></div><div><span>Completion <b>{progress}%</b></span><i><em style={{width:`${progress}%`}}/></i></div><strong>{quality}%<small>quality</small></strong><em className={status==="At risk"?"warn":""}>● {status}</em><button>Open →</button></article>)}</section>
+          <aside><section className="panel datasetReady"><small>DATASET READY</small><h3>Finance Eval v2.8</h3><p>4,820 newly approved records passed all quality gates.</p><div><span>Schema validated</span><b>✓</b></div><div><span>PII scan complete</span><b>✓</b></div><div><span>Lineage attached</span><b>✓</b></div><button>Review & export →</button></section><section className="panel budgetCard"><div className="budgetRing"><span><b>68%</b><small>utilized</small></span></div><p><b>$91,200 remaining</b><span>Across active project budgets</span></p></section></aside>
+        </div>
+      </div>
+    </section>
+  </main>
+}

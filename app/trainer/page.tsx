@@ -9,7 +9,7 @@ export default function TrainerPage(){return <main className="guidePortal traine
   <div className="guideKpis five"><GuideKpiT label="Quality Score" value="96.8%" note="Excellent"/><GuideKpiT label="Tasks Completed" value="1,247" note="+56 this week"/><GuideKpiT label="Earnings This Week" value="$842.50" note="+12% this week"/><GuideKpiT label="Pending Payment" value="$1,256.00" note="Will be paid May 25"/><GuideKpiT label="Active Projects" value="3" note="View projects"/></div>
   <div className="guideTwoCol trainerTop">
     <section className="guideCard"><header><h3>Your Active Tasks</h3></header><div className="activeTaskList">{[["Math Reasoning Evaluation","TASK #C0921","Due in 2h 15m","$4.50"],["Code Generation Review","TASK #C0832","Due in 8h 45m","$6.00"],["Safety Classification","TASK #C0103","Due in 9h 10m","$3.25"]].map(([t,id,due,rate])=><article key={id}><p><b>{t}</b><span>{id}</span><small>{due}</small></p><p><b>{rate}</b><a href="#">Continue</a></p></article>)}</div><button className="guideTextButton">View all tasks</button></section>
-    <section className="guideCard"><header><h3>Weekly Task Progress</h3></header><div className="miniLegend"><span><i/>Completed</span><span><i/>Reviewed</span></div><div className="doubleBars">{[90,130,84,160,104,120,72,34].map((v,i)=><div key={i}><i style={{height:`${v}px`}}/><em style={{height:`${v*.72}px`}}/><span>{["Mon","Tue","Wed","Thu","Fri","Sat","Sun",""][i]}</span></div>)}</div></section>
+    <section className="guideCard"><header><h3>Weekly Task Progress</h3><strong className="chartTotal">1,247 <small>tasks</small></strong></header><WeeklyProgressChart/></section>
   </div>
   <div className="guideTwoCol trainerMid">
     <section className="guideCard"><header><h3>Recommended Projects</h3></header><div className="recommendList">{[["Medical QA Evaluation","Cinder Research","95% match"],["Legal Reasoning Dataset","Nexora","90% match"],["Multilingual SFT Project","Vector Labs","90% match"]].map(([t,c,m])=><article key={t}><i>◎</i><p><b>{t}</b><span>{c}</span><small>$5.00 – $8.00 per task · 10–15h/week</small></p><em>{m}</em><button>Apply</button></article>)}</div></section>
@@ -21,3 +21,22 @@ export default function TrainerPage(){return <main className="guidePortal traine
   </div>
  </div></section></main>}
 function GuideKpiT({label,value,note}:{label:string;value:string;note:string}){return <article><span>{label}</span><strong>{value}</strong><small>{note}</small></article>}
+function WeeklyProgressChart(){
+  const days=[
+    {day:"Mon",completed:108,reviewed:82},{day:"Tue",completed:146,reviewed:118},
+    {day:"Wed",completed:121,reviewed:94},{day:"Thu",completed:178,reviewed:151},
+    {day:"Fri",completed:139,reviewed:112},{day:"Sat",completed:156,reviewed:127},
+    {day:"Sun",completed:84,reviewed:62},
+  ];
+  return <div className="weeklyChart" role="img" aria-label="Completed and reviewed tasks by weekday">
+    <div className="miniLegend"><span><i/>Completed</span><span><i/>Reviewed</span></div>
+    <div className="weeklyPlot">
+      <div className="barYAxis">{["200","150","100","50","0"].map(v=><span key={v}>{v}</span>)}</div>
+      <div className="barGrid"/>
+      <div className="barGroups">{days.map(d=><div className="barGroup" key={d.day}>
+        <div className="barPair"><i data-value={`${d.completed} completed`} style={{height:`${d.completed/2}%`}}/><em data-value={`${d.reviewed} reviewed`} style={{height:`${d.reviewed/2}%`}}/></div>
+        <span>{d.day}</span>
+      </div>)}</div>
+    </div>
+  </div>
+}

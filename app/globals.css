@@ -192,3 +192,57 @@
   .guideDonut{align-self:center}
   .weeklyChart{padding-left:14px;padding-right:14px}
 }
+
+/* Glacier blue-gray platform theme */
+:root{
+  --ink:#17212b;
+  --muted:#667482;
+  --indigo:#3976c5;
+  --cyan:#72b6d9;
+  --paper:#f4f7fa;
+  --navy:#172b43;
+  --line:#d9e1e8;
+}
+.portal,.applyPage{
+  --emerald-50:#eff6ff;
+  --emerald-100:#dbeafe;
+  --emerald-200:#bfdbfe;
+  --emerald-500:#3976c5;
+  --emerald-600:#2f68b3;
+  --emerald-700:#285eaa;
+  --slate-950:#17212b;
+  --slate-700:#344454;
+  --slate-500:#667482;
+  --slate-300:#c8d2dc;
+  --slate-200:#d9e1e8;
+  --slate-100:#edf2f6;
+  --canvas:#f4f7fa;
+}
+.guidePortal{
+  --g:#3976c5;
+  --gd:#285eaa;
+  --gp:#e8f2fa;
+  --ink:#17212b;
+  --sub:#667482;
+  --line:#d9e1e8;
+  --canvas:#f4f7fa;
+}
+.guideSide{background:#fafdff}
+.guideSide nav a{color:#344454}
+.guideSide nav a.active{background:#e8f2fa;color:#285eaa}
+.guideCard,.guideKpis article,.guideSpecStrip>div{border-color:#d9e1e8;box-shadow:0 8px 28px rgba(42,74,106,.045)}
+.chartLegend i.soft,.miniLegend span:nth-child(2) i{background:#9bc9e2}
+.lineGrid,.barGrid{background:repeating-linear-gradient(to bottom,#e3eaf0 0,#e3eaf0 1px,transparent 1px,transparent 25%)}
+.areaFill{background:linear-gradient(180deg,rgba(57,118,197,.22),rgba(114,182,217,.025))}
+.segment{box-shadow:0 1px 3px rgba(57,118,197,.18)}
+.segment.soft{background:#72b6d9}
+.guideDonut{background:conic-gradient(#285eaa 0 43%,#3976c5 43% 72%,#72b6d9 72% 87%,#c8d2dc 87% 100%)}
+.donutLegend i.dark{background:#285eaa}
+.donutLegend i.mid{background:#3976c5}
+.donutLegend i.amber{background:#72b6d9}
+.donutLegend i.pale{background:#c8d2dc}
+.barPair i{background:linear-gradient(180deg,#5d94d5,#285eaa);box-shadow:0 4px 10px rgba(57,118,197,.18)}
+.barPair em{background:linear-gradient(180deg,#c5e1ef,#72b6d9)}
+.growthCard{background:radial-gradient(circle at 85% 50%,rgba(114,182,217,.3),transparent 31%),linear-gradient(145deg,#172b43,#285eaa)}
+.growthCard button{background:#3976c5}
+.awardSeal{border-color:#3976c5;background:#72b6d9;box-shadow:0 0 0 9px rgba(114,182,217,.24)}

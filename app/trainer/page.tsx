@@ -1,6 +1,7 @@
 export const metadata={title:"Trainer Dashboard · Trainora AI"};
+import { TrainerJobs } from "./TrainerJobs";
 const trainerNav:[string,[string,string,string][]][]=[
-  ["DASHBOARD",[["Dashboard","▣","#dashboard"]]],["PROJECTS",[["My Projects","▦","#projects"],["Available Projects","◎","#projects"],["Applications","♧","/apply"]]],
+  ["DASHBOARD",[["Dashboard","▣","#dashboard"]]],["PROJECTS",[["Jobs Marketplace","▦","#jobs"],["My Projects","▦","#projects"],["Applications","♧","#application-status"]]],
   ["TASKS",[["My Tasks","▤","#tasks"],["Review Tasks","◫","#feedback"],["Gold Tasks","◆","#progress"]]],["ASSESSMENTS",[["My Assessments","◇","/apply"],["Results","◎","#progress"]]],
   ["EARNINGS",[["Overview","$","#earnings"],["Payments","▥","#earnings"],["Payout Methods","◎","#earnings"]]],["ACCOUNT",[["Profile","♙","#dashboard"],["Settings","⚙","#notifications"],["Notifications","♢","#notifications"]]],["SUPPORT",[["Help Center","?","#support"],["Contact Support","♧","#support"]]],
 ];
@@ -15,6 +16,12 @@ export default function TrainerPage(){return <main className="guidePortal traine
     <section className="guideCard" id="projects"><header><h3>Recommended Projects</h3></header><div className="recommendList">{[["Medical QA Evaluation","Cinder Research","95% match"],["Legal Reasoning Dataset","Nexora","90% match"],["Multilingual SFT Project","Vector Labs","90% match"]].map(([t,c,m])=><article key={t}><i>◎</i><p><b>{t}</b><span>{c}</span><small>$5.00 – $8.00 per task · 10–15h/week</small></p><em>{m}</em><a href="/apply">Apply</a></article>)}</div></section>
     <section className="guideCard" id="feedback"><header><h3>Recent Feedback</h3></header><div className="feedbackList">{[["Great attention to detail and accurate scoring.","Math Reasoning Eval · 3h ago","good"],["Your justifications are very helpful.","Code Generation Review · 1d ago","good"],["Try to provide more examples in your reasoning.","Safety Classification · 2d ago","warn"]].map(([t,d,c])=><article key={t}><i className={c}>⊙</i><p><b>{t}</b><span>{d}</span></p></article>)}</div><a className="guideTextButton" href="#feedback">View all feedback</a></section>
   </div>
+  <TrainerJobs/>
+  <section className="trainerApprovalStatus" id="application-status">
+    <header><div><small>ACCOUNT ELIGIBILITY</small><h2>Your approval and verification status</h2><p>Project access is controlled by these quality gates and continuously rechecked.</p></div><strong>Approved trainer</strong></header>
+    <div>{[["Email verified","Your account email has been confirmed.","passed"],["Identity verified","Government ID, selfie match, and liveness passed.","passed"],["Credentials validated","Professional evidence reviewed by Trainora.","passed"],["Core assessment","Quality and integrity assessment passed.","passed"],["Quality probation","First 50 tasks receive enhanced review sampling.","active"]].map(([title,description,status])=><article data-status={status} key={title}><i>{status==="passed"?"✓":"●"}</i><p><b>{title}</b><span>{description}</span></p><em>{status}</em></article>)}</div>
+    <p className="trainerApprovalNote">Trainora may request renewed identity or credential checks when documents expire, account risk changes, or a project requires a higher verification level.</p>
+  </section>
   <div className="guideTwoCol trainerBottom">
     <section className="guideCard" id="notifications"><header><h3>Notifications</h3></header><div className="notificationList">{[["New task available","Math Reasoning Evaluation","2m ago"],["Your task was approved","Code Generation Review","1h ago"],["Payment scheduled","$1,156.00","3h ago"],["New project match","Medical QA Evaluation","1d ago"],["Assessment assigned","Safety & Policy Evaluation","2d ago"]].map(([t,d,time])=><article key={t}><i>⊙</i><p><b>{t}</b><span>{d}</span></p><em>{time}</em></article>)}</div><a className="guideTextButton" href="#notifications">View all notifications</a></section>
     <section className="growthCard" id="support"><div><h2>Grow your expertise<br/>and unlock more<br/>opportunities.</h2>{["Complete assessments","Maintain high quality","Get advanced projects","Earn quality bonuses"].map(x=><p key={x}>✓ {x}</p>)}<a href="/apply">View my progress →</a></div><div className="awardSeal">✓</div></section>

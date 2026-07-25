@@ -228,8 +228,12 @@
   --canvas:#f4f7fa;
 }
 .guideSide{background:#fafdff}
-.guideSide nav a{color:#344454}
-.guideSide nav a.active{background:#e8f2fa;color:#285eaa}
+.guideSide nav a{color:#223344;font-weight:650}
+.guideSide nav a i{color:#43576a}
+.guideSide nav a:hover{background:#dfeefa;color:#1f5fae;transform:translateX(3px);box-shadow:inset 3px 0 0 #72b6d9}
+.guideSide nav a:hover i{color:#3976c5}
+.guideSide nav a.active{background:#d7eafa;color:#1f5fae;box-shadow:inset 3px 0 0 #3976c5}
+.guideSide nav a.active i{color:#285eaa}
 .guideCard,.guideKpis article,.guideSpecStrip>div{border-color:#d9e1e8;box-shadow:0 8px 28px rgba(42,74,106,.045)}
 .chartLegend i.soft,.miniLegend span:nth-child(2) i{background:#9bc9e2}
 .lineGrid,.barGrid{background:repeating-linear-gradient(to bottom,#e3eaf0 0,#e3eaf0 1px,transparent 1px,transparent 25%)}
@@ -246,3 +250,27 @@
 .growthCard{background:radial-gradient(circle at 85% 50%,rgba(114,182,217,.3),transparent 31%),linear-gradient(145deg,#172b43,#285eaa)}
 .growthCard button{background:#3976c5}
 .awardSeal{border-color:#3976c5;background:#72b6d9;box-shadow:0 0 0 9px rgba(114,182,217,.24)}
+
+/* Immediate dashboard navigation feedback */
+html:has(.guidePortal){scroll-behavior:auto}
+.guidePortal [id]{scroll-margin-top:92px}
+.guideCard:target,.guideKpis:target,.guideSpecStrip:target,.growthCard:target{
+  outline:3px solid rgba(57,118,197,.22);
+  box-shadow:0 12px 34px rgba(57,118,197,.13);
+  animation:section-arrive .32s ease-out;
+}
+@keyframes section-arrive{from{transform:translateY(5px);opacity:.78}to{transform:translateY(0);opacity:1}}
+.guideSide nav a{transition:background-color .12s,color .12s,transform .12s}
+.guideSide nav a:active{transform:translateX(2px)}
+.guideTextButton{text-align:center;border-radius:7px}
+.recommendList article>a{grid-column:3;color:var(--g);font-size:11px;font-weight:700;padding:5px 0}
+.growthCard a{display:inline-flex;background:#3976c5;color:#fff;border-radius:6px;padding:11px 14px;font-size:12px;font-weight:700;margin-top:15px}
+.trainerGuide:has(:target) .guideSide a.active{background:transparent;color:#344454}
+.trainerGuide:has(#dashboard:target) .guideSide a[href="#dashboard"],
+.trainerGuide:has(#projects:target) .guideSide a[href="#projects"],
+.trainerGuide:has(#tasks:target) .guideSide a[href="#tasks"],
+.trainerGuide:has(#feedback:target) .guideSide a[href="#feedback"],
+.trainerGuide:has(#progress:target) .guideSide a[href="#progress"],
+.trainerGuide:has(#earnings:target) .guideSide a[href="#earnings"],
+.trainerGuide:has(#notifications:target) .guideSide a[href="#notifications"],
+.trainerGuide:has(#support:target) .guideSide a[href="#support"]{background:var(--gp);color:var(--gd)}

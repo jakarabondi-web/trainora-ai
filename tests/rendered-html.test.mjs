@@ -78,3 +78,19 @@ test("connects the admin controls and trainer jobs marketplace to API routes", a
     "app/api/admin/operations-analytics/route.ts",
   ]) await access(file(route));
 });
+
+test("dashboard menus use real destinations instead of placeholder links", async () => {
+  const dashboards = await Promise.all([
+    readFile(file("app/admin/AdminDashboard.tsx"), "utf8"),
+    readFile(file("app/trainer/page.tsx"), "utf8"),
+    readFile(file("app/client/page.tsx"), "utf8"),
+    readFile(file("app/reviewer/page.tsx"), "utf8"),
+  ]);
+  for (const dashboard of dashboards) {
+    assert.doesNotMatch(dashboard, /href=["']#["']/);
+  }
+  assert.match(dashboards[1], /#jobs/);
+  assert.match(dashboards[1], /#payments/);
+  assert.match(dashboards[2], /#integrations/);
+  assert.match(dashboards[3], /#adjudications/);
+});

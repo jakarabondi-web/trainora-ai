@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
     root: process.cwd(),
   },
   webpack(config) {
+    if (!process.env.VERCEL && process.env.BUILD_TARGET !== "vercel") {
+      return config;
+    }
     const shim = path.resolve(
       process.cwd(),
       "lib/server/vercel-cloudflare-shim.ts",

@@ -27,6 +27,12 @@ export async function ticketWithMessages(ticketId: string) {
   return { ticket, messages: messages.results ?? [] };
 }
 
+export async function setTicketStatus(ticketId: string, status: string) {
+  const db = database();
+  await db.prepare("UPDATE support_tickets SET status = ?, updated_at = ? WHERE id = ?")
+    .bind(status, now(), ticketId).run();
+}
+
 export async function addMessage(ticketId: string, senderId: string, body: string) {
   const db = database();
   const timestamp = now();

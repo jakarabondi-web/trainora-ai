@@ -5,6 +5,7 @@ export const adminNavigation: Array<[string, Array<[string, DashboardIconName, s
   ["PEOPLE", [
     ["Applicants", "user", "/admin/applicants"], ["Trainers", "trainer", "/admin/trainers"],
     ["Clients", "client", "/admin/clients"], ["Reviewers", "reviewer", "/admin/reviewers"],
+    ["Users & roles", "roles", "/admin/users"],
   ]],
   ["DELIVERY", [
     ["Jobs", "jobs", "/admin/jobs"], ["Projects", "projects", "/admin/projects"],

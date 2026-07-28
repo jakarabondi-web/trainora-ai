@@ -5,10 +5,20 @@ export const users = sqliteTable("users", {
   email: text("email").notNull().unique(),
   fullName: text("full_name").notNull(),
   role: text("role").notNull().default("applicant"),
+  passwordHash: text("password_hash"),
+  failedLoginCount: integer("failed_login_count").notNull().default(0),
+  lockedUntil: text("locked_until"),
   emailVerifiedAt: text("email_verified_at"),
   status: text("status").notNull().default("active"),
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
+});
+
+export const sessions = sqliteTable("sessions", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  expiresAt: text("expires_at").notNull(),
+  createdAt: text("created_at").notNull(),
 });
 
 export const applicants = sqliteTable("applicants", {
@@ -171,4 +181,131 @@ export const auditEvents = sqliteTable("audit_events", {
   metadataJson: text("metadata_json").notNull().default("{}"),
   ipHash: text("ip_hash"),
   createdAt: text("created_at").notNull(),
+});
+
+export const payoutMethods = sqliteTable("payout_methods", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  type: text("type").notNull().default("bank_account"),
+  label: text("label").notNull(),
+  detailsJson: text("details_json").notNull().default("{}"),
+  isDefault: integer("is_default", { mode: "boolean" }).notNull().default(false),
+  createdAt: text("created_at").notNull(),
+});
+
+export const earnings = sqliteTable("earnings", {
+  id: text("id").primaryKey(),
+  trainerId: text("trainer_id").notNull(),
+  sourceType: text("source_type").notNull(),
+  sourceId: text("source_id").notNull(),
+  description: text("description").notNull(),
+  amountCents: integer("amount_cents").notNull(),
+  status: text("status").notNull().default("pending"),
+  availableAt: text("available_at").notNull(),
+  createdAt: text("created_at").notNull(),
+});
+
+export const payouts = sqliteTable("payouts", {
+  id: text("id").primaryKey(),
+  trainerId: text("trainer_id").notNull(),
+  methodId: text("method_id").notNull(),
+  amountCents: integer("amount_cents").notNull(),
+  status: text("status").notNull().default("pending"),
+  requestedAt: text("requested_at").notNull(),
+  paidAt: text("paid_at"),
+});
+
+export const organizations = sqliteTable("organizations", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  createdBy: text("created_by").notNull(),
+  createdAt: text("created_at").notNull(),
+});
+
+export const organizationMembers = sqliteTable("organization_members", {
+  id: text("id").primaryKey(),
+  organizationId: text("organization_id").notNull(),
+  userId: text("user_id").notNull(),
+  role: text("role").notNull().default("member"),
+  createdAt: text("created_at").notNull(),
+});
+
+export const projects = sqliteTable("projects", {
+  id: text("id").primaryKey(),
+  organizationId: text("organization_id").notNull(),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  discipline: text("discipline").notNull(),
+  status: text("status").notNull().default("active"),
+  budgetCents: integer("budget_cents").notNull().default(0),
+  spentCents: integer("spent_cents").notNull().default(0),
+  requiredQualityScore: real("required_quality_score").notNull().default(85),
+  createdBy: text("created_by").notNull(),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+export const projectTasks = sqliteTable("project_tasks", {
+  id: text("id").primaryKey(),
+  projectId: text("project_id").notNull(),
+  title: text("title").notNull(),
+  instructions: text("instructions").notNull(),
+  rateCents: integer("rate_cents").notNull().default(0),
+  status: text("status").notNull().default("open"),
+  assignedTrainerId: text("assigned_trainer_id"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+export const taskSubmissions = sqliteTable("task_submissions", {
+  id: text("id").primaryKey(),
+  taskId: text("task_id").notNull(),
+  trainerId: text("trainer_id").notNull(),
+  content: text("content").notNull(),
+  status: text("status").notNull().default("pending"),
+  reviewerId: text("reviewer_id"),
+  reviewNotes: text("review_notes"),
+  qualityScore: real("quality_score"),
+  submittedAt: text("submitted_at").notNull(),
+  reviewedAt: text("reviewed_at"),
+});
+
+export const invoices = sqliteTable("invoices", {
+  id: text("id").primaryKey(),
+  organizationId: text("organization_id").notNull(),
+  amountCents: integer("amount_cents").notNull(),
+  status: text("status").notNull().default("draft"),
+  periodStart: text("period_start").notNull(),
+  periodEnd: text("period_end").notNull(),
+  createdAt: text("created_at").notNull(),
+});
+
+export const supportTickets = sqliteTable("support_tickets", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  subject: text("subject").notNull(),
+  status: text("status").notNull().default("open"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+export const supportMessages = sqliteTable("support_messages", {
+  id: text("id").primaryKey(),
+  ticketId: text("ticket_id").notNull(),
+  senderId: text("sender_id").notNull(),
+  body: text("body").notNull(),
+  createdAt: text("created_at").notNull(),
+});
+
+export const disputes = sqliteTable("disputes", {
+  id: text("id").primaryKey(),
+  raisedBy: text("raised_by").notNull(),
+  subjectType: text("subject_type").notNull(),
+  subjectId: text("subject_id").notNull(),
+  reason: text("reason").notNull(),
+  status: text("status").notNull().default("open"),
+  resolution: text("resolution"),
+  createdAt: text("created_at").notNull(),
+  resolvedAt: text("resolved_at"),
 });

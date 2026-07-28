@@ -97,8 +97,8 @@ test("dashboard menus use real destinations instead of placeholder links", async
   }
   assert.match(dashboards[1], /#jobs/);
   assert.match(dashboards[1], /#payments/);
-  assert.match(dashboards[2], /#integrations/);
-  assert.match(dashboards[3], /#adjudications/);
+  assert.match(dashboards[2], /#billing/);
+  assert.match(dashboards[3], /#review-queue/);
 });
 
 test("admin navigation exposes a complete, routable control surface", async () => {

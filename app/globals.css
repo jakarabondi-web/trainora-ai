@@ -890,3 +890,17 @@ html:has(.guidePortal){scroll-behavior:auto}
   .techMiniFlow div:nth-child(4){display:none}
   .techMiniFlow{grid-template-columns:repeat(3,1fr)}
 }
+
+.authPage{min-height:100vh;background:radial-gradient(circle at 90% 15%,rgba(98,82,244,.07),transparent 28%),#f7f7f4;display:flex;flex-direction:column;align-items:center;padding:50px 20px}
+.authPage>.portalBrand{margin-bottom:30px}
+.authForm{width:100%;max-width:420px;background:#fff;border:1px solid #e0e3e3;border-radius:15px;box-shadow:0 12px 38px rgba(25,38,48,.05);padding:34px 32px;display:flex;flex-direction:column;gap:16px}
+.authForm h1{font:500 26px Georgia;margin:0}
+.authForm>p{font-size:10px;color:#76838d;margin:-8px 0 4px}
+.authForm label{display:flex;flex-direction:column;gap:6px;font-size:11px;font-weight:750;color:#25384a}
+.authForm input{border:1px solid #d5e0e9;border-radius:8px;background:#fff;color:#132638;padding:12px 13px;font:inherit;outline:none}
+.authForm input:focus{border-color:#4e8ebc;box-shadow:0 0 0 3px rgba(78,142,188,.12)}
+.authRoleToggle{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.authRoleToggle button{border:1px solid #d5e0e9;background:#f7f9fb;color:#526779;border-radius:8px;padding:10px;font-size:10px;font-weight:700;cursor:pointer}
+.authRoleToggle button.selected{border-color:#2f719d;background:#eaf4fb;color:#1f4a63}
+.authSwitch{margin-top:18px;font-size:10px;color:#667786}
+.authSwitch a{color:#2f719d;font-weight:700}

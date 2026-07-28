@@ -16,20 +16,20 @@ export async function GET() {
     ] = await db.batch([
       db.prepare("SELECT COUNT(*) AS total FROM users WHERE role = 'trainer' AND status = 'active'"),
       db.prepare(`SELECT COUNT(*) AS total,
-        SUM(CASE WHEN application_status = 'under_review' THEN 1 ELSE 0 END) AS in_review,
-        SUM(CASE WHEN application_status = 'approved' THEN 1 ELSE 0 END) AS approved,
-        AVG(CASE WHEN quality_score > 0 THEN quality_score END) AS average_quality
+        COALESCE(SUM(CASE WHEN application_status = 'under_review' THEN 1 ELSE 0 END), 0) AS in_review,
+        COALESCE(SUM(CASE WHEN application_status = 'approved' THEN 1 ELSE 0 END), 0) AS approved,
+        COALESCE(AVG(CASE WHEN quality_score > 0 THEN quality_score END), 0) AS average_quality
         FROM applicants`),
-      db.prepare("SELECT COUNT(*) AS total, SUM(CASE WHEN status = 'published' THEN 1 ELSE 0 END) AS published FROM jobs"),
+      db.prepare("SELECT COUNT(*) AS total, COALESCE(SUM(CASE WHEN status = 'published' THEN 1 ELSE 0 END), 0) AS published FROM jobs"),
       db.prepare(`SELECT COUNT(*) AS total,
-        SUM(CASE WHEN status = 'submitted' THEN 1 ELSE 0 END) AS pending,
-        SUM(CASE WHEN status = 'assigned' THEN 1 ELSE 0 END) AS assigned FROM job_applications`),
+        COALESCE(SUM(CASE WHEN status = 'submitted' THEN 1 ELSE 0 END), 0) AS pending,
+        COALESCE(SUM(CASE WHEN status = 'assigned' THEN 1 ELSE 0 END), 0) AS assigned FROM job_applications`),
       db.prepare(`SELECT COUNT(*) AS total,
-        SUM(CASE WHEN passed = 1 THEN 1 ELSE 0 END) AS passed,
-        AVG(score) AS average_score FROM assessment_attempts WHERE status = 'submitted'`),
+        COALESCE(SUM(CASE WHEN passed = 1 THEN 1 ELSE 0 END), 0) AS passed,
+        COALESCE(AVG(score), 0) AS average_score FROM assessment_attempts WHERE status = 'submitted'`),
       db.prepare(`SELECT COUNT(*) AS total,
-        SUM(CASE WHEN status IN ('pending','in_progress','needs_review') THEN 1 ELSE 0 END) AS pending,
-        SUM(CASE WHEN status = 'failed' THEN 1 ELSE 0 END) AS failed FROM verification_checks`),
+        COALESCE(SUM(CASE WHEN status IN ('pending','in_progress','needs_review') THEN 1 ELSE 0 END), 0) AS pending,
+        COALESCE(SUM(CASE WHEN status = 'failed' THEN 1 ELSE 0 END), 0) AS failed FROM verification_checks`),
     ]);
     const first = (value: { results?: unknown[] }) => (value.results?.[0] ?? {}) as Record<string, unknown>;
     return Response.json({
@@ -45,4 +45,3 @@ export async function GET() {
     return apiError(error);
   }
 }
-

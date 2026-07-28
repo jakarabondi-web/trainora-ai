@@ -119,6 +119,22 @@ export const jobs = sqliteTable("jobs", {
   publishedAt: text("published_at"),
   closesAt: text("closes_at"),
   createdBy: text("created_by").notNull(),
+  externalSourceId: text("external_source_id"),
+  externalJobId: text("external_job_id"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+export const jobSources = sqliteTable("job_sources", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  provider: text("provider").notNull(),
+  accountSlug: text("account_slug").notNull(),
+  status: text("status").notNull().default("active"),
+  lastSyncAt: text("last_sync_at"),
+  lastSyncStatus: text("last_sync_status"),
+  lastSyncCount: integer("last_sync_count").notNull().default(0),
+  createdBy: text("created_by").notNull(),
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });

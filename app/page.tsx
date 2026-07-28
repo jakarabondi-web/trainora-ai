@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
+import { DashboardIcon, type DashboardIconName } from "./components/DashboardIcon";
 
 export const metadata: Metadata = {
   title: "Trainora AI — The expert intelligence network",
   description: "Verified human expertise for training, evaluating, and improving advanced AI systems.",
 };
 
-const services = [
-  ["↗", "RLHF & preference data", "Human preferences that sharpen model behavior.", "Domain experts"],
-  ["⌘", "Supervised fine-tuning", "Gold-standard examples for specialized models.", "Writers & specialists"],
-  ["◈", "Model evaluations", "Rigorous scoring across quality, safety, and accuracy.", "Expert evaluators"],
-  ["◎", "Red teaming", "Adversarial testing for critical failure modes.", "Safety researchers"],
-  ["✓", "Factuality verification", "Evidence-backed review of complex responses.", "Researchers"],
-  ["</>", "Code evaluation", "Production-grade review across languages and stacks.", "Software engineers"],
-  ["文", "Multilingual evaluation", "Native-language quality across cultures and regions.", "Linguists"],
-  ["◇", "Benchmark development", "Purpose-built tests for your model and domain.", "Research scientists"],
+const services: [DashboardIconName,string,string,string][] = [
+  ["feedback", "RLHF & preference data", "Human preferences that sharpen model behavior.", "Domain experts"],
+  ["brain", "Supervised fine-tuning", "Gold-standard examples for specialized models.", "Writers & specialists"],
+  ["reports", "Model evaluations", "Rigorous scoring across quality, safety, and accuracy.", "Expert evaluators"],
+  ["security", "Red teaming", "Adversarial testing for critical failure modes.", "Safety researchers"],
+  ["quality", "Factuality verification", "Evidence-backed review of complex responses.", "Researchers"],
+  ["code", "Code evaluation", "Production-grade review across languages and stacks.", "Software engineers"],
+  ["language", "Multilingual evaluation", "Native-language quality across cultures and regions.", "Linguists"],
+  ["target", "Benchmark development", "Purpose-built tests for your model and domain.", "Research scientists"],
 ];
 
 const qualityStages = [
@@ -28,7 +29,7 @@ export default function Home() {
   return (
     <main>
       <header className="nav">
-        <a className="brand" href="#top"><span>t</span> trainora<span className="ai">ai</span></a>
+        <a className="brand" href="#top"><span><DashboardIcon name="brain" size={19}/></span> trainora<span className="ai">ai</span></a>
         <nav aria-label="Main navigation">
           <a href="#platform">Platform</a><a href="#solutions">Solutions</a><a href="#network">Expert Network</a>
           <a href="#quality">Quality</a><a href="#security">Security</a><a href="#resources">Resources</a>
@@ -37,6 +38,7 @@ export default function Home() {
       </header>
 
       <section className="hero shell" id="top">
+        <TechLiveBackground/>
         <div className="heroCopy">
           <p className="eyebrow"><i /> The human intelligence layer for AI</p>
           <h1>The right experts make <em>better AI</em> possible.</h1>
@@ -66,18 +68,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="network" id="network">
-        <div className="shell">
-          <p className="eyebrow light">The expert network</p>
-          <div className="networkHead"><h2>A global network of professionals.<br/><em>Not generic annotators.</em></h2><p>We recruit, verify, evaluate, and manage specialists with proven education, professional experience, and domain expertise.</p></div>
-          <div className="world">
-            <div className="mapDots" aria-hidden="true">{Array.from({length: 44},(_,i)=><i key={i} style={{"--x":`${(i*37)%94+3}%`,"--y":`${(i*53)%74+12}%`} as React.CSSProperties}/>)}</div>
-            <span className="cluster c1">38,200<br/><small>North America</small></span><span className="cluster c2">17,640<br/><small>Europe</small></span><span className="cluster c3">12,480<br/><small>Asia Pacific</small></span>
-          </div>
-          <div className="chips">{["Software engineers","Doctors","Legal professionals","Scientists","Mathematicians","Financial analysts","Researchers","Linguists"].map(x=><span key={x}>{x}</span>)}</div>
-          <a className="button pale" href="/apply">Explore our expert network →</a>
-        </div>
-      </section>
+      <LiveWorldNetwork/>
 
       <section className="section shell quality" id="quality">
         <div><p className="eyebrow">Quality system</p><h2>Quality is designed into <em>every task.</em></h2>
@@ -90,17 +81,9 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section tint" id="solutions"><div className="shell"><p className="eyebrow">Solutions</p><h2>Every stage of <em>AI development.</em></h2><div className="serviceGrid">{services.map(([i,t,d,e])=><article key={t}><span>{i}</span><h3>{t}</h3><p>{d}</p><small>{e}</small><a href="#contact">Learn more →</a></article>)}</div></div></section>
+      <section className="section tint" id="solutions"><div className="shell"><p className="eyebrow">Solutions</p><h2>Every stage of <em>AI development.</em></h2><div className="serviceGrid">{services.map(([icon,t,d,e])=><article key={t}><span><DashboardIcon name={icon} size={24}/></span><h3>{t}</h3><p>{d}</p><small>{e}</small><a href="#contact">Learn more →</a></article>)}</div></div></section>
 
-      <section className="section shell workflow">
-        <p className="eyebrow">From brief to production</p><h2>One connected workflow.</h2>
-        <div className="timeline">{[
-          ["01","Define your objective","Set the task, model, expertise, language, volume, and quality bar."],
-          ["02","Build your expert team","We identify, qualify, and assign the most relevant specialists."],
-          ["03","Create and review","Experts work while reviewers monitor quality and consistency."],
-          ["04","Export and integrate","Receive approved datasets through secure APIs and cloud storage."],
-        ].map(([n,t,d])=><article key={n}><b>{n}</b><h3>{t}</h3><p>{d}</p></article>)}</div>
-      </section>
+      <ScaleWorkflow/>
 
       <section className="section shell platformPreview">
         <div className="sectionIntro compact"><p className="eyebrow">Trainora workspace</p><h2>One platform for workforce, tasks, and quality.</h2></div>
@@ -120,16 +103,7 @@ export default function Home() {
         <div><p className="eyebrow">For experts</p><h2>Turn your expertise into <em>meaningful AI work.</em></h2><p className="lede">Join projects matched to your knowledge, experience, and availability—with clear instructions, feedback, and transparent compensation.</p><div className="benefits">{["Work matched to your expertise","Transparent project rates","Flexible remote opportunities","Reliable payment tracking","Clear review feedback","Specialized projects"].map(x=><span key={x}>✓ {x}</span>)}</div><a className="button" href="/apply">Apply to become an expert →</a></div>
       </section>
 
-      <section className="case shell">
-        <div><p className="eyebrow">Illustrative project</p><h2>Improving factual accuracy in a financial research model.</h2><p>A verified team of financial analysts, accountants, and compliance professionals evaluated complex regulatory and market responses.</p></div>
-        <div className="caseResults">{[["12,400","Responses evaluated"],["96.9%","Reviewer agreement"],["38%","Fewer unsupported claims"],["6 weeks","Dataset delivery"]].map(([n,l])=><div key={l}><b>{n}</b><span>{l}</span></div>)}</div>
-      </section>
-
-      <section className="section shell" id="resources"><p className="eyebrow">Research & insights</p><h2>Building better systems,<br/><em>one insight at a time.</em></h2><div className="resources">{[
-        ["Guide · 8 min","Building reliable human evaluation programs"],
-        ["Research · 11 min","Designing effective AI response rubrics"],
-        ["Perspective · 6 min","How expert feedback improves model performance"],
-      ].map(([m,t],i)=><article key={t}><span>0{i+1}</span><small>{m}</small><h3>{t}</h3><a href="#contact">Read insight ↗</a></article>)}</div></section>
+      <FAQSection/>
 
       <section className="finalCta" id="contact"><div className="orbits"/><div><p className="eyebrow light">Start a project</p><h2>Build better AI with<br/><em>better human feedback.</em></h2><p>Tell us what you are developing. We’ll help design the expert workforce, workflow, and quality system required to improve it.</p><div className="actions center"><a className="button pale" href="mailto:hello@trainora.ai">Start a project →</a><a className="textLink lightLink" href="mailto:hello@trainora.ai">Schedule a consultation</a></div></div></section>
 
@@ -141,17 +115,119 @@ export default function Home() {
 function NetworkVisual() {
   const people = [["AK","Software Engineering","pA"],["LM","Medicine","pB"],["SR","Law","pC"],["JN","Mathematics","pD"],["MT","Finance","pE"],["YL","Linguistics","pF"]];
   return <div className="networkVisual" aria-label="A network of verified experts connected to an AI model">
-    <div className="rings r1"/><div className="rings r2"/><div className="core"><i>✦</i><b>AI MODEL</b><span>Evaluation active</span></div>
+    <div className="rings r1"/><div className="rings r2"/><div className="core"><i><DashboardIcon name="brain" size={30}/></i><b>AI MODEL</b><span>Evaluation active</span></div>
     {people.map(([n,d,c],i)=><div className={`person ${c}`} key={d}><span>{n}</span><p><b>{d}</b><small>✓ Verified expert</small></p></div>)}
     <div className="qualityPill qp1">● Quality&nbsp; <b>98.4%</b></div><div className="qualityPill qp2">✓ Review complete</div>
   </div>
 }
 
+function TechLiveBackground(){
+  const nodes=Array.from({length:22},(_,index)=>({
+    left:`${(index*43)%97}%`,
+    top:`${(index*67)%86+6}%`,
+    delay:`${-(index%8)*.7}s`,
+    size:`${index%4===0?7:4}px`,
+  }));
+  const streams=[
+    [8,18,34,-12],[20,72,31,18],[37,12,29,31],[48,66,36,-24],
+    [61,22,28,17],[72,76,24,-29],[79,34,19,23],[12,46,22,35],
+  ];
+  return <div className="techLiveBackground" aria-hidden="true">
+    <div className="techGrid"/>
+    {streams.map(([left,top,width,rotation],index)=><i className="dataStream" key={index} style={{left:`${left}%`,top:`${top}%`,width:`${width}%`,transform:`rotate(${rotation}deg)`,animationDelay:`${-index*.55}s`}}/>)}
+    {nodes.map((node,index)=><b className="techNode" key={index} style={{left:node.left,top:node.top,width:node.size,height:node.size,animationDelay:node.delay}}/>)}
+    <span className="techSignal signalA"><DashboardIcon name="quality" size={15}/> Quality 98.4%</span>
+    <span className="techSignal signalB"><DashboardIcon name="globe" size={15}/> 120 countries</span>
+    <span className="techSignal signalC"><DashboardIcon name="activity" size={15}/> Live evaluation</span>
+  </div>;
+}
+
+function LiveWorldNetwork(){
+  const hubs=[
+    ["North America","14,820","20%","34%","AK"],["Latin America","8,240","31%","62%","MR"],
+    ["Europe","17,640","49%","29%","EV"],["Africa","6,320","51%","58%","NO"],
+    ["Middle East","5,410","60%","43%","SA"],["South Asia","9,870","68%","56%","RP"],
+    ["East Asia","11,490","78%","35%","JL"],["Oceania","4,280","84%","70%","TM"],
+  ];
+  return <section className="luminousNetwork" id="network">
+    <div className="shell luminousNetworkHead">
+      <div><p className="eyebrow">Global signal atlas</p><h2>A global network of<br/><em>exceptional experts.</em></h2></div>
+      <p>Verified professionals across every major region—matched by discipline, language, quality, availability, and security requirements.</p>
+    </div>
+    <div className="shell luminousMapShell">
+      <div className="liveNetworkStats">
+        <span><DashboardIcon name="users" size={18}/><b>75,000+</b><small>Verified experts</small></span>
+        <span><DashboardIcon name="globe" size={18}/><b>120+</b><small>Countries</small></span>
+        <span><DashboardIcon name="quality" size={18}/><b>98.4%</b><small>Review agreement</small></span>
+        <em><i/> Live network</em>
+      </div>
+      <div className="luminousWorld" aria-label="Live map of Trainora experts around the world">
+        <img src="/trainora-world-grid-2k.png" alt="Complete dotted world map showing Trainora's global expert network"/>
+        <svg className="worldRoutes" viewBox="0 0 1000 500" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M215 180 Q360 45 490 165"/><path d="M225 190 Q405 285 520 285"/>
+          <path d="M500 170 Q630 70 785 180"/><path d="M520 285 Q690 360 845 335"/>
+          <path d="M585 220 Q690 125 785 180"/><path d="M675 280 Q760 225 845 335"/>
+        </svg>
+        {hubs.map(([region,count,left,top,initials],index)=><div className={`worldHub hub${index+1}`} key={region} style={{left,top,animationDelay:`${-index*.55}s`}}>
+          <i><b/></i><span><strong>{initials}</strong><p><b>{region}</b><small>{count} experts · verified</small></p></span>
+        </div>)}
+        <div className="worldSignal signalQuality"><DashboardIcon name="quality" size={15}/><span><b>96.8%</b> live quality</span></div>
+        <div className="worldSignal signalCoverage"><DashboardIcon name="activity" size={15}/><span><b>24/7</b> coverage</span></div>
+      </div>
+      <div className="networkDomainRow"><span>Explore by expertise</span>{["Software engineering","Medicine","Law","Finance","Mathematics","Linguistics"].map((domain,index)=><a href="/apply" key={domain} className={index===0?"active":""}>{domain}</a>)}<a href="/apply">All disciplines →</a></div>
+    </div>
+  </section>;
+}
+
+function ScaleWorkflow(){
+  const steps:[string,DashboardIconName,string,string,string][]=[
+    ["01","target","Define","Set the model, discipline, language, volume, and quality bar.","Objective locked"],
+    ["02","users","Match","Match verified professionals to the work and security requirements.","Experts matched"],
+    ["03","feedback","Create & review","Create, compare, calibrate, and adjudicate every response.","Quality verified"],
+    ["04","integrations","Integrate","Move approved, traceable data securely into your AI workflow.","Dataset ready"],
+  ];
+  return <section className="scaleWorkflow">
+    <div className="shell">
+      <header><div><p className="eyebrow">From objective to outcomes</p><h2>Human intelligence <em>at scale.</em></h2></div><p>One continuous system turns a project brief into reviewed, production-ready data.</p></header>
+      <div className="scaleSteps">
+        <div className="scaleFlowLine"><i/></div>
+        {steps.map(([number,icon,title,description,status],index)=><article key={number} style={{"--step-delay":`${index*.35}s`} as React.CSSProperties}>
+          <div className={`scaleIcon scaleIcon${index+1}`}>
+            <span/><i/><DashboardIcon name={icon} size={43}/>
+          </div>
+          <b>{number}</b><h3>{title}</h3><p>{description}</p><small><i/> {status}</small>
+        </article>)}
+      </div>
+    </div>
+  </section>;
+}
+
 function Feature({n,label,title,text,steps}:{n:string,label:string,title:string,text:string,steps:string[]}) {
-  return <article className="feature"><div className="featureText"><span>{n} / {label}</span><h3>{title}</h3><p>{text}</p><a href="#contact">Explore capability →</a></div><div className="miniFlow">{steps.map((s,i)=><div key={s}><i>{i===steps.length-1?"✓":i+1}</i><span>{s}</span>{i<steps.length-1&&<b>→</b>}</div>)}</div></article>
+  const iconSets:Record<string,DashboardIconName[]>={
+    "01":["target","brain","feedback","quality"],
+    "02":["reports","assessment","quality","users"],
+    "03":["activity","sparkles","refresh","integrations"],
+  };
+  return <article className="feature"><div className="featureText"><span>{n} / {label}</span><h3>{title}</h3><p>{text}</p><a href="#contact">Explore capability →</a></div><div className="miniFlow techMiniFlow">{steps.map((s,i)=><div key={s}><i><em/><DashboardIcon name={iconSets[n][i]} size={22}/></i><strong>0{i+1}</strong><span>{s}</span>{i<steps.length-1&&<b>→</b>}</div>)}</div></article>
+}
+
+function FAQSection(){
+  const questions=[
+    ["How are experts verified?","Every applicant passes email verification, government-ID and selfie checks, credential review, role-specific assessments, and a final human approval decision."],
+    ["What prevents substandard work?","Project assessments, gold tasks, calibration, peer review, consensus scoring, anomaly detection, and senior adjudication continuously protect quality."],
+    ["Can Trainora support sensitive AI projects?","Projects can use role-based access, workspace isolation, restricted downloads, audit trails, configurable retention, and enhanced identity requirements."],
+    ["How does data reach our development workflow?","Approved datasets can be exported in structured formats or delivered through secure APIs and cloud-storage integrations with full task lineage."],
+    ["What does the trainer approval journey look like?","Applicants see each stage clearly: application received, email confirmed, identity checked, credentials reviewed, assessment passed, and final approval."],
+    ["Can jobs be imported from other systems?","Super admins can publish manually, import validated CSV files, and synchronize public Greenhouse or Lever job feeds from the jobs operations console."],
+  ];
+  return <section className="faqSection" id="resources"><div className="shell faqLayout">
+    <header><p className="eyebrow">Clear answers</p><h2>Questions that matter<br/><em>before you begin.</em></h2><p>Direct answers about expert quality, security, delivery, and joining the network.</p><a className="button" href="#contact">Ask another question →</a></header>
+    <div className="faqList">{questions.map(([question,answer],index)=><details key={question} open={index===0}><summary><span>0{index+1}</span><b>{question}</b><i>+</i></summary><p>{answer}</p></details>)}</div>
+  </div></section>;
 }
 
 function Footer() {
   const cols = {Platform:["Expert Network","Projects","Evaluations","Quality","APIs"],Solutions:["Model Training","Model Evaluation","Red Teaming","Multilingual AI"],Experts:["Apply","Disciplines","How work functions","Payments"],Company:["About","Careers","Security","Contact"],Resources:["Research","Guides","Documentation","Help Center"]};
-  return <footer><div className="shell footerTop"><div className="footerBrand"><a className="brand inverse" href="#top"><span>t</span> trainora<span className="ai">ai</span></a><p>The expert intelligence network for advanced AI development.</p></div>{Object.entries(cols).map(([h,links])=><div className="footerCol" key={h}><b>{h}</b>{links.map(x=><a href="#top" key={x}>{x}</a>)}</div>)}</div><div className="shell footerBottom"><span>© 2026 Trainora AI</span><span>Privacy · Terms · Cookies · Accessibility</span><span className="status">● All systems operational</span></div></footer>
+  const destinations:Record<string,string>={Platform:"#platform","Expert Network":"#network",Projects:"#platform",Evaluations:"#quality",Quality:"#quality",APIs:"#platform",Solutions:"#solutions","Model Training":"#solutions","Model Evaluation":"#solutions","Red Teaming":"#solutions","Multilingual AI":"#solutions",Experts:"#experts",Apply:"/apply",Disciplines:"#network","How work functions":"/roles",Payments:"/trainer#payments",Company:"#contact",About:"#top",Careers:"#contact",Security:"#security",Contact:"#contact",Resources:"#resources",Research:"#resources",Guides:"#resources",Documentation:"/roles","Help Center":"#contact"};
+  return <footer><div className="shell footerTop"><div className="footerBrand"><a className="brand inverse" href="#top"><span><DashboardIcon name="brain" size={19}/></span> trainora<span className="ai">ai</span></a><p>The expert intelligence network for advanced AI development.</p></div>{Object.entries(cols).map(([h,links])=><div className="footerCol" key={h}><b>{h}</b>{links.map(x=><a href={destinations[x]??"#top"} key={x}>{x}</a>)}</div>)}</div><div className="shell footerBottom"><span>© 2026 Trainora AI</span><span>Privacy · Terms · Cookies · Accessibility</span><span className="status">● All systems operational</span></div></footer>
 }

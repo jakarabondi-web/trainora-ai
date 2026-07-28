@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { JobSummary } from "../../lib/trainora-types";
+import { DashboardIcon } from "../components/DashboardIcon";
 
 export function TrainerJobs() {
   const [jobs,setJobs]=useState<JobSummary[]>([]);
@@ -38,18 +39,17 @@ export function TrainerJobs() {
   return <section className="trainerJobsBoard" id="jobs">
     <header><div><small>VERIFIED OPPORTUNITIES</small><h2>Jobs marketplace</h2><p>Browse paid projects matched to your approved expertise, verification level, and current quality score.</p></div><a href="#application-status">My eligibility →</a></header>
     {notice&&<div className="jobNotice">{notice}<button onClick={()=>setNotice("")}>×</button></div>}
-    <div className="jobFilters"><label>⌕<input value={query} onChange={event=>setQuery(event.target.value)} placeholder="Search jobs, clients, or disciplines"/></label><select value={discipline} onChange={event=>setDiscipline(event.target.value)}>{disciplines.map(value=><option key={value}>{value}</option>)}</select><button onClick={()=>{setQuery("");setDiscipline("All disciplines")}}>Clear filters</button></div>
+    <div className="jobFilters"><label><DashboardIcon name="search" size={18}/><input value={query} onChange={event=>setQuery(event.target.value)} placeholder="Search jobs, clients, or disciplines"/></label><select value={discipline} onChange={event=>setDiscipline(event.target.value)}>{disciplines.map(value=><option key={value}>{value}</option>)}</select><button onClick={()=>{setQuery("");setDiscipline("All disciplines")}}>Clear filters</button></div>
     <div className="jobBoardLayout">
       <div className="jobsList">
         <div className="jobsListHead"><span>{filtered.length} opportunities</span><em>Quality-gated access</em></div>
         {loading?<div className="jobEmpty">Loading verified jobs…</div>:filtered.length?filtered.map(job=><button className={selected?.id===job.id?"selected":""} key={job.id} onClick={()=>setSelected(job)}>
-          <i>◎</i><div><b>{job.title}</b><span>{job.clientName} · {job.discipline} · {job.location}</span><small>{job.description}</small><p>{job.requirements.slice(0,2).map(requirement=><em key={requirement}>{requirement}</em>)}</p></div><aside><strong>${job.rateMin}–${job.rateMax}</strong><span>per {job.rateUnit}</span><em>{job.hoursPerWeek}</em>{job.applicationStatus&&<b>{job.applicationStatus}</b>}</aside>
+          <i><DashboardIcon name="jobs" size={19}/></i><div><b>{job.title}</b><span>{job.clientName} · {job.discipline} · {job.location}</span><small>{job.description}</small><p>{job.requirements.slice(0,2).map(requirement=><em key={requirement}>{requirement}</em>)}</p></div><aside><strong>${job.rateMin}–${job.rateMax}</strong><span>per {job.rateUnit}</span><em>{job.hoursPerWeek}</em>{job.applicationStatus&&<b>{job.applicationStatus}</b>}</aside>
         </button>):<div className="jobEmpty">No jobs match these filters.</div>}
       </div>
       <div className="jobDetail">
-        {selected?<><header><i>◎</i><div><small>{selected.clientName}</small><h3>{selected.title}</h3><p>{selected.discipline} · {selected.location}</p></div></header><div className="jobDetailStats"><span><small>Rate</small><b>${selected.rateMin}–${selected.rateMax}/{selected.rateUnit}</b></span><span><small>Time</small><b>{selected.hoursPerWeek||"Flexible"}</b></span><span><small>Openings</small><b>{selected.openings}</b></span><span><small>Quality gate</small><b>≥ {selected.requiredQualityScore}%</b></span></div><section><h4>Project scope</h4><p>{selected.description}</p></section><section><h4>Eligibility requirements</h4>{selected.requirements.map(requirement=><p className="jobRequirement" key={requirement}>✓ {requirement}</p>)}</section><div className="jobApplyRule"><b>Before you apply</b><p>Your identity, credentials, approval status, and quality score are checked automatically. Applications that do not meet a mandatory gate are not submitted.</p></div><button className="jobApplyButton" disabled={Boolean(selected.applicationStatus)} onClick={()=>void apply(selected)}>{selected.applicationStatus?`Application ${selected.applicationStatus}`:"Apply for this job →"}</button></>:<div className="selectJob"><i>▦</i><h3>Select a job</h3><p>Open an opportunity to see its scope, requirements, quality threshold, rate, and application status.</p></div>}
+        {selected?<><header><i><DashboardIcon name="jobs" size={20}/></i><div><small>{selected.clientName}</small><h3>{selected.title}</h3><p>{selected.discipline} · {selected.location}</p></div></header><div className="jobDetailStats"><span><small>Rate</small><b>${selected.rateMin}–${selected.rateMax}/{selected.rateUnit}</b></span><span><small>Time</small><b>{selected.hoursPerWeek||"Flexible"}</b></span><span><small>Openings</small><b>{selected.openings}</b></span><span><small>Quality gate</small><b>≥ {selected.requiredQualityScore}%</b></span></div><section><h4>Project scope</h4><p>{selected.description}</p></section><section><h4>Eligibility requirements</h4>{selected.requirements.map(requirement=><p className="jobRequirement" key={requirement}>✓ {requirement}</p>)}</section><div className="jobApplyRule"><b>Before you apply</b><p>Your identity, credentials, approval status, and quality score are checked automatically. Applications that do not meet a mandatory gate are not submitted.</p></div><button className="jobApplyButton" disabled={Boolean(selected.applicationStatus)} onClick={()=>void apply(selected)}>{selected.applicationStatus?`Application ${selected.applicationStatus}`:"Apply for this job →"}</button></>:<div className="selectJob"><i><DashboardIcon name="jobs" size={24}/></i><h3>Select a job</h3><p>Open an opportunity to see its scope, requirements, quality threshold, rate, and application status.</p></div>}
       </div>
     </div>
   </section>
 }
-

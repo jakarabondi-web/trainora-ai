@@ -6,7 +6,8 @@ export async function requireAdmin() {
   const platformUser = await getChatGPTUser();
   let sessionUser = null;
   try { sessionUser = await getSessionUser(); } catch {}
-  const user = platformUser ?? (sessionUser ? {
+  const sessionIsAdminSafe = sessionUser?.mfaLevel === "multi_factor";
+  const user = platformUser ?? (sessionUser && sessionIsAdminSafe ? {
     email: sessionUser.email,
     displayName: sessionUser.fullName,
     fullName: sessionUser.fullName,

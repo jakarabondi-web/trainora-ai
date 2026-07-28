@@ -17,6 +17,9 @@ export function AdminDashboard({analytics}:{analytics:PlatformAnalytics;capabili
   const [jobs,setJobs]=useState<JobSummary[]>([]);
   const [jobApplications,setJobApplications]=useState<JobApplicationRow[]>([]);
   const [selectedApplicant,setSelectedApplicant]=useState<ApplicantSummary|null>(null);
+  const [selectedIds,setSelectedIds]=useState<string[]>([]);
+  const [applicantFilter,setApplicantFilter]=useState("all");
+  const [scoreSort,setScoreSort]=useState<"highest"|"newest">("highest");
   const [backendState,setBackendState]=useState<"loading"|"connected"|"needs_config"|"auth_required">("loading");
   const [operations,setOperations]=useState<OperationsAnalytics|null>(null);
   const m=analytics.metrics;
@@ -44,6 +47,21 @@ export function AdminDashboard({analytics}:{analytics:PlatformAnalytics;capabili
     if(!response.ok){setNotice(payload.error??"The review action failed.");return}
     setNotice(success);await loadOperationalData();
   }
+
+  async function bulkApprove(){
+    if(!selectedIds.length){setNotice("Select applicants before using bulk approval.");return}
+    const response=await fetch("/api/admin/applicants/bulk-decision",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
+      applicantIds:selectedIds,decision:"approved",notes:"Bulk approved after every mandatory identity, credential, risk, integrity, and subject-assessment gate passed.",
+    })});
+    const payload=await response.json();
+    if(!response.ok){setNotice(payload.error??"Bulk approval failed.");return}
+    setNotice(`${payload.approved} approved; ${payload.blocked} remained locked because one or more quality gates are incomplete.`);
+    setSelectedIds([]);await loadOperationalData();
+  }
+
+  const visibleApplicants=[...applicants]
+    .filter(applicant=>applicantFilter==="all"||applicant.applicationStatus===applicantFilter)
+    .sort((a,b)=>scoreSort==="highest"?(b.qualityScore-a.qualityScore):String(b.submittedAt??"").localeCompare(String(a.submittedAt??"")));
 
   async function createJob(event:FormEvent<HTMLFormElement>){
     event.preventDefault();
@@ -89,13 +107,20 @@ export function AdminDashboard({analytics}:{analytics:PlatformAnalytics;capabili
 
         <section className="applicantCommand" id="applicants">
           <header><div><small>APPLICANT QUALITY CONTROL</small><h2>Approval command center</h2><p>Review evidence gate by gate. Approval remains locked until mandatory verification and assessment checks pass.</p></div><div className="commandStats"><span><b>{applicants.length}</b>Total</span><span><b>{applicants.filter(a=>a.applicationStatus==="under_review").length}</b>In review</span><span><b>{applicants.filter(a=>a.riskScore>=30).length}</b>Risk flags</span></div></header>
+          <div className="applicantToolbar">
+            <label><span>Status</span><select value={applicantFilter} onChange={event=>setApplicantFilter(event.target.value)}><option value="all">All applicants</option><option value="under_review">In review</option><option value="approved">Approved</option><option value="action_required">Action required</option><option value="waitlisted">Waitlisted</option></select></label>
+            <label><span>Order</span><select value={scoreSort} onChange={event=>setScoreSort(event.target.value as "highest"|"newest")}><option value="highest">Highest score first</option><option value="newest">Newest first</option></select></label>
+            <button className="bulkApprove" disabled={!selectedIds.length} onClick={bulkApprove}>Approve selected ({selectedIds.length})</button>
+            <small>Every selected record is rechecked server-side. Ineligible applicants remain locked.</small>
+          </div>
           <div className="applicantWorkspace">
             <div className="applicantQueue">
-              <div className="queueHeader"><b>Applicant</b><b>Stage</b><b>Quality</b><b>Risk</b></div>
-              {applicants.length?applicants.map(applicant=><button className={selectedApplicant?.id===applicant.id?"selected":""} key={applicant.id} onClick={()=>setSelectedApplicant(applicant)}>
-                <span><i>{applicant.fullName.split(" ").map(part=>part[0]).join("").slice(0,2)}</i><p><b>{applicant.fullName}</b><small>{applicant.discipline} · {applicant.country}</small></p></span>
+              <div className="queueHeader"><input aria-label="Select all visible applicants" type="checkbox" checked={visibleApplicants.length>0&&visibleApplicants.every(item=>selectedIds.includes(item.id))} onChange={event=>setSelectedIds(event.target.checked?visibleApplicants.map(item=>item.id):[])}/><b>Applicant</b><b>Stage</b><b>Score / rank</b><b>Risk</b></div>
+              {visibleApplicants.length?visibleApplicants.map(applicant=><button className={selectedApplicant?.id===applicant.id?"selected":""} key={applicant.id} onClick={()=>setSelectedApplicant(applicant)}>
+                <input aria-label={`Select ${applicant.fullName}`} type="checkbox" checked={selectedIds.includes(applicant.id)} onClick={event=>event.stopPropagation()} onChange={event=>setSelectedIds(current=>event.target.checked?[...current,applicant.id]:current.filter(id=>id!==applicant.id))}/>
+                <span><i>{applicant.fullName.split(" ").map(part=>part[0]).join("").slice(0,2)}</i><p><b>{applicant.fullName}</b><small>{applicant.discipline} · {applicant.country} · {applicant.yearsExperience} yrs</small></p></span>
                 <em data-status={applicant.applicationStatus}>{applicant.currentStage.replaceAll("_"," ")}</em>
-                <strong>{applicant.qualityScore||"—"}{applicant.qualityScore?"%":""}</strong>
+                <strong>{applicant.qualityScore?`${applicant.qualityScore}%`:"—"}<small>{applicant.assessmentRank??"Not tested"}</small></strong>
                 <strong className={applicant.riskScore>=30?"riskHigh":""}>{applicant.riskScore}%</strong>
               </button>):<div className="adminEmpty"><i><DashboardIcon name="users" size={22}/></i><b>No applications yet</b><p>New expert applications will enter this queue after submission.</p></div>}
             </div>
@@ -110,6 +135,11 @@ export function AdminDashboard({analytics}:{analytics:PlatformAnalytics;capabili
                   <QualityGate label="Credentials" status={checkStatus(selectedApplicant,"credential")} detail="Education, license, employment, and portfolio evidence"/>
                   <QualityGate label="Pre-screen assessment" status={selectedApplicant.assessment?.passed?"passed":selectedApplicant.assessment?.status==="submitted"?"failed":"pending"} detail={selectedApplicant.assessment?`${selectedApplicant.assessment.score??"—"}% quality · ${selectedApplicant.assessment.integrityScore??"—"}% integrity`:"Not assigned"}/>
                 </div>
+                {selectedApplicant.assessment&&<div className="assessmentEvidence">
+                  <header><div><b>{selectedApplicant.assessment.title}</b><span>Subject-specific, timed, versioned assessment</span></div><strong>{selectedApplicant.assessment.rankBand??"Unranked"}<small>{selectedApplicant.assessment.percentile??"—"}th percentile</small></strong></header>
+                  <div>{Object.entries(selectedApplicant.assessment.scoreBreakdown.sections??{}).map(([label,value])=><p key={label}><span>{label}</span><b>{value}%</b><i><em style={{width:`${value}%`}}/></i></p>)}</div>
+                  <footer><span>Completed in {formatDuration(selectedApplicant.assessment.completionSeconds)}</span><span>{selectedApplicant.assessment.flags.length?`Flags: ${selectedApplicant.assessment.flags.join(", ").replaceAll("_"," ")}`:"No automated integrity flags"}</span></footer>
+                </div>}
                 <div className="evidenceFiles"><b>Protected evidence</b>{selectedApplicant.documents.length?selectedApplicant.documents.map(document=><a key={document.id} href={`/api/admin/documents/${document.id}`} target="_blank" rel="noreferrer"><i>▤</i><span>{document.kind.replaceAll("_"," ")}<small>{document.filename}</small></span><em>Review ↗</em></a>):<p>No evidence files have been uploaded.</p>}</div>
                 <div className="verificationActions">
                   <b>Record reviewed evidence</b>
@@ -189,7 +219,7 @@ export function AdminDashboard({analytics}:{analytics:PlatformAnalytics;capabili
           </div>
           <div className="jobApplicationQueue"><header><h3>Trainer applications</h3><span>{jobApplications.filter(item=>item.status==="submitted").length} awaiting review</span></header>{jobApplications.length?jobApplications.map(item=><article key={item.id}><div><b>{item.trainer_name}</b><span>{item.job_title} · {item.trainer_email}</span></div><p><b>{item.match_score}% match</b><small>{item.quality_score}% quality</small></p><em data-status={item.status}>{item.status}</em><div><button onClick={()=>applicantAction(`/api/admin/job-applications/${item.id}/decision`,{decision:"shortlisted"},"Trainer shortlisted for this job.")}>Shortlist</button><button onClick={()=>applicantAction(`/api/admin/job-applications/${item.id}/decision`,{decision:"assigned"},"Trainer assigned to this job.")}>Assign</button><button onClick={()=>applicantAction(`/api/admin/job-applications/${item.id}/decision`,{decision:"rejected"},"Job application declined.")}>Decline</button></div></article>):<div className="adminEmpty"><i><DashboardIcon name="files" size={22}/></i><b>No job applications yet</b><p>Eligible trainer applications will appear here.</p></div>}</div>
         </section>
-        <section className="assessmentManager" id="assessment-admin"><div><small>ASSESSMENT GOVERNANCE</small><h2>Strict pre-screen controls</h2><p>The default test uses weighted questions, attempt limits, timed integrity signals, and an 80% pass threshold. Test passage never overrides identity, credentials, or human review.</p><div className="assessmentRules">{["Versioned question bank","Weighted safety questions","Maximum two attempts","Fast-completion risk flag","Manual score review","Complete audit history"].map(rule=><span key={rule}>✓ {rule}</span>)}</div></div><form onSubmit={createAssessment}><h3>Create an assessment version</h3><label>Title<input name="title" defaultValue="Trainora Core Quality & Integrity"/></label><div><label>Pass score<input name="passScore" type="number" min="1" max="100" defaultValue="80"/></label><label>Maximum attempts<input name="maxAttempts" type="number" min="1" max="5" defaultValue="2"/></label><label>Duration<input name="durationMinutes" type="number" min="5" defaultValue="25"/></label></div><button>Activate new version →</button></form></section>
+        <section className="assessmentManager" id="assessment-admin"><div><small>ASSESSMENT GOVERNANCE</small><h2>Strict, subject-specific pre-screening</h2><p>Every discipline combines a shared quality, security, safety, and rubric-judgment section with a dedicated expertise section. Both the 80% overall threshold and 75% domain threshold must pass. Test passage never overrides identity, credentials, or human review.</p><div className="assessmentRules">{["Versioned subject banks","Section & competency scores","Maximum two attempts","Timing and response-pattern flags","Percentile and rank bands","Complete audit history"].map(rule=><span key={rule}>✓ {rule}</span>)}</div></div><form onSubmit={createAssessment}><h3>Activate an assessment version</h3><label>Discipline<select name="discipline" defaultValue="Software Engineering">{["Software Engineering","Medicine","Law","Mathematics","Finance","Linguistics","Research"].map(item=><option key={item}>{item}</option>)}</select></label><div><label>Pass score<input name="passScore" type="number" min="1" max="100" defaultValue="80"/></label><label>Maximum attempts<input name="maxAttempts" type="number" min="1" max="5" defaultValue="2"/></label><label>Duration<input name="durationMinutes" type="number" min="5" defaultValue="35"/></label></div><button>Activate subject test →</button></form></section>
         <section className="guideSpecStrip" id="platform"><div><h3>Production platform</h3><p><b>Frontend</b> Next.js · React · TypeScript · responsive dashboards</p><p><b>Backend</b> API routes · D1 records · R2 protected evidence · audit events</p></div><div><h3>Roles and platform settings</h3><p>Review permissions, integrations, retention, quality defaults, and administrator access.</p><a href="/admin/settings">Open platform settings →</a><a href="/roles">Review roles →</a></div></section>
       </div>
     </section>
@@ -202,6 +232,10 @@ function checkStatus(applicant:ApplicantSummary,...types:string[]){
   if(relevant.some(check=>["pending","in_progress","needs_review"].includes(check.status)))return "pending";
   if(relevant.some(check=>check.status==="passed"))return "passed";
   return "missing";
+}
+function formatDuration(seconds:number|null){
+  if(seconds==null)return "—";
+  return `${Math.floor(seconds/60)}m ${seconds%60}s`;
 }
 function QualityGate({label,status,detail}:{label:string;status:string;detail:string}){
   return <article data-status={status}><i>{status==="passed"?"✓":status==="failed"?"!":"○"}</i><p><b>{label}</b><span>{detail}</span></p><em>{status.replaceAll("_"," ")}</em></article>

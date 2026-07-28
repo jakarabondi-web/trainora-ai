@@ -1,8 +1,16 @@
 import { env } from "cloudflare:workers";
 import { getChatGPTUser } from "../../app/chatgpt-auth";
+import { getSessionUser } from "./session-auth";
 
 export async function requireAdmin() {
-  const user = await getChatGPTUser();
+  const platformUser = await getChatGPTUser();
+  let sessionUser = null;
+  try { sessionUser = await getSessionUser(); } catch {}
+  const user = platformUser ?? (sessionUser ? {
+    email: sessionUser.email,
+    displayName: sessionUser.fullName,
+    fullName: sessionUser.fullName,
+  } : null);
   if (env.DEV_AUTH_BYPASS === "true") {
     return user ?? { email: "local-admin@trainora.ai", displayName: "Local Admin", fullName: "Local Admin" };
   }
@@ -27,4 +35,3 @@ export async function adminOnly() {
   }
   return { user, response: null };
 }
-

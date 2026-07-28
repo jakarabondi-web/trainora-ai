@@ -1,4 +1,4 @@
-import { coreQualityQuestions } from "../../../../lib/assessment-bank";
+import { getAssessmentBlueprint } from "../../../../lib/assessment-bank";
 import { adminOnly } from "../../../../lib/server/access";
 import { apiError, audit, database, id, now } from "../../../../lib/server/trainora-store";
 
@@ -21,6 +21,7 @@ export async function POST(request: Request) {
     const access = await adminOnly();
     if (access.response) return access.response;
     const body = await request.json() as Record<string, unknown>;
+    const blueprint = getAssessmentBlueprint(String(body.discipline ?? "Research"));
     const assessmentId = id("assessment");
     const db = database();
     await db.prepare(
@@ -29,13 +30,13 @@ export async function POST(request: Request) {
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)`,
     ).bind(
       assessmentId,
-      String(body.title ?? "Trainora Core Quality & Integrity"),
-      String(body.discipline ?? "All disciplines"),
+      String(body.title ?? blueprint.title),
+      blueprint.discipline,
       Number(body.version ?? 1),
-      Number(body.durationMinutes ?? 25),
+      Number(body.durationMinutes ?? blueprint.durationMinutes),
       Number(body.passScore ?? 80),
       Number(body.maxAttempts ?? 2),
-      JSON.stringify(body.questions ?? coreQualityQuestions),
+      JSON.stringify(body.questions ?? blueprint.questions),
       now(),
       now(),
     ).run();
@@ -45,4 +46,3 @@ export async function POST(request: Request) {
     return apiError(error);
   }
 }
-

@@ -25,6 +25,9 @@ export const applicants = sqliteTable("applicants", {
   qualityScore: real("quality_score").notNull().default(0),
   riskScore: real("risk_score").notNull().default(0),
   adminNotes: text("admin_notes"),
+  assessmentRank: text("assessment_rank"),
+  assessmentPercentile: real("assessment_percentile"),
+  accessTier: text("access_tier").notNull().default("onboarding"),
   submittedAt: text("submitted_at"),
   decidedAt: text("decided_at"),
   createdAt: text("created_at").notNull(),
@@ -91,6 +94,11 @@ export const assessmentAttempts = sqliteTable("assessment_attempts", {
   answersJson: text("answers_json"),
   score: real("score"),
   integrityScore: real("integrity_score"),
+  competencyScoresJson: text("competency_scores_json"),
+  percentile: real("percentile"),
+  rankBand: text("rank_band"),
+  completionSeconds: integer("completion_seconds"),
+  flagsJson: text("flags_json"),
   passed: integer("passed", { mode: "boolean" }),
   startedAt: text("started_at"),
   submittedAt: text("submitted_at"),
@@ -170,5 +178,16 @@ export const auditEvents = sqliteTable("audit_events", {
   entityId: text("entity_id").notNull(),
   metadataJson: text("metadata_json").notNull().default("{}"),
   ipHash: text("ip_hash"),
+  createdAt: text("created_at").notNull(),
+});
+
+export const authSessions = sqliteTable("auth_sessions", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  tokenHash: text("token_hash").notNull().unique(),
+  authMethod: text("auth_method").notNull(),
+  mfaLevel: text("mfa_level").notNull().default("single_factor"),
+  expiresAt: text("expires_at").notNull(),
+  lastSeenAt: text("last_seen_at").notNull(),
   createdAt: text("created_at").notNull(),
 });

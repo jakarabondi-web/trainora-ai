@@ -37,6 +37,9 @@
     "worker",
     "build",
     "examples",
-    "db"
+    "db",
+    "**/* 2.ts",
+    "**/* 2.tsx",
+    "**/* 2.mts"
   ]
 }

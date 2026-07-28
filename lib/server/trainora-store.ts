@@ -57,7 +57,8 @@ export async function getApplicants(): Promise<ApplicantSummary[]> {
     `SELECT
       a.*, u.full_name, u.email, u.email_verified_at,
       aa.id AS attempt_id, aa.status AS attempt_status, aa.score AS attempt_score,
-      aa.integrity_score, aa.passed, s.title AS assessment_title
+      aa.integrity_score, aa.passed, aa.percentile, aa.rank_band, aa.completion_seconds,
+      aa.flags_json, aa.competency_scores_json, s.title AS assessment_title
      FROM applicants a
      JOIN users u ON u.id = a.user_id
      LEFT JOIN assessment_attempts aa ON aa.id = (
@@ -98,6 +99,9 @@ export async function getApplicants(): Promise<ApplicantSummary[]> {
     currentStage: row.current_stage as ApplicantSummary["currentStage"],
     qualityScore: Number(row.quality_score ?? 0),
     riskScore: Number(row.risk_score ?? 0),
+    assessmentRank: row.assessment_rank ? String(row.assessment_rank) : null,
+    assessmentPercentile: row.assessment_percentile == null ? null : Number(row.assessment_percentile),
+    accessTier: String(row.access_tier ?? "onboarding"),
     submittedAt: row.submitted_at ? String(row.submitted_at) : null,
     adminNotes: row.admin_notes ? String(row.admin_notes) : null,
     checks: checks.filter((check) => check.applicant_id === row.id).map((check) => ({
@@ -120,6 +124,11 @@ export async function getApplicants(): Promise<ApplicantSummary[]> {
       status: String(row.attempt_status),
       score: row.attempt_score == null ? null : Number(row.attempt_score),
       integrityScore: row.integrity_score == null ? null : Number(row.integrity_score),
+      percentile: row.percentile == null ? null : Number(row.percentile),
+      rankBand: row.rank_band ? String(row.rank_band) : null,
+      completionSeconds: row.completion_seconds == null ? null : Number(row.completion_seconds),
+      flags: JSON.parse(String(row.flags_json || "[]")),
+      scoreBreakdown: JSON.parse(String(row.competency_scores_json || "{}")),
       passed: row.passed == null ? null : Boolean(row.passed),
     } : null,
   }));

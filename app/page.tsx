@@ -34,7 +34,7 @@ export default function Home() {
           <a href="#platform">Platform</a><a href="#solutions">Solutions</a><a href="#network">Expert Network</a>
           <a href="#quality">Quality</a><a href="#security">Security</a><a href="#resources">Resources</a>
         </nav>
-        <div className="navActions"><a href="/trainer">Sign in</a><a href="/apply">Apply as an expert</a><a className="button small" href="#contact">Talk to sales</a></div>
+        <div className="navActions"><a href="/login">Sign in</a><a href="/apply">Apply as an expert</a><a className="button small" href="#contact">Talk to sales</a></div>
       </header>
 
       <section className="hero shell" id="top">

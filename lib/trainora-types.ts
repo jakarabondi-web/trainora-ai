@@ -28,6 +28,9 @@ export type ApplicantSummary = {
   currentStage: ApplicationStage;
   qualityScore: number;
   riskScore: number;
+  assessmentRank: string | null;
+  assessmentPercentile: number | null;
+  accessTier: string;
   submittedAt: string | null;
   adminNotes: string | null;
   checks: Array<{
@@ -50,6 +53,14 @@ export type ApplicantSummary = {
     status: string;
     score: number | null;
     integrityScore: number | null;
+    percentile: number | null;
+    rankBand: string | null;
+    completionSeconds: number | null;
+    flags: string[];
+    scoreBreakdown: {
+      sections?: Record<string, number>;
+      competencies?: Record<string, number>;
+    };
     passed: boolean | null;
   } | null;
 };

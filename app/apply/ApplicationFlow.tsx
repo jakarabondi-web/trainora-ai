@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useState } from "react";
 
 type PublicQuestion = {
   id: string;
+  section: "Core quality" | "Domain expertise";
   competency: string;
   prompt: string;
   options: string[];
@@ -36,7 +37,7 @@ export function ApplicationFlow() {
   const [attemptId, setAttemptId] = useState("");
   const [questions, setQuestions] = useState<PublicQuestion[]>([]);
   const [answers, setAnswers] = useState<Record<string, number>>({});
-  const [result, setResult] = useState<{ score: number; integrityScore: number; passed: boolean } | null>(null);
+  const [result, setResult] = useState<{ score: number; domainScore: number; integrityScore: number; percentile: number; rankBand: string; passed: boolean } | null>(null);
 
   const stageIndex = { profile: 0, email: 1, identity: 2, assessment: 4, status: 5 }[stage];
 
@@ -271,9 +272,9 @@ export function ApplicationFlow() {
         </div>}
 
         {stage === "assessment" && <div>
-          <div className="assessmentHead"><span>STEP 5 OF 6 · CONTROLLED PRE-SCREEN</span><em>One sitting</em><h2>Quality and integrity assessment</h2><p>Your score, response pattern, and completion timing are recorded. Passing the test does not bypass identity or human review.</p></div>
+          <div className="assessmentHead"><span>STEP 5 OF 6 · CONTROLLED PRE-SCREEN</span><em>Core + {questions.find(question=>question.section==="Domain expertise")?.competency?"subject expertise":"domain"} · one sitting</em><h2>Quality and subject assessment</h2><p>The test combines universal quality, confidentiality, safety, and rubric judgment with questions specific to the discipline you selected. Overall score, domain score, response pattern, and timing are recorded.</p></div>
           {questions.map((question, index) => <fieldset key={question.id}>
-            <legend><span>{index + 1}</span><div>{question.prompt}<small>{question.competency}</small></div></legend>
+            <legend><span>{index + 1}</span><div>{question.prompt}<small>{question.section} · {question.competency}</small></div></legend>
             {question.options.map((option, optionIndex) => <label className={answers[question.id] === optionIndex ? "chosen" : ""} key={option}>
               <input type="radio" name={question.id} checked={answers[question.id] === optionIndex} onChange={() => setAnswers((current) => ({ ...current, [question.id]: optionIndex }))}/>
               <i>{String.fromCharCode(65 + optionIndex)}</i>{option}
@@ -286,6 +287,7 @@ export function ApplicationFlow() {
           <i>{result?.passed ? "✓" : "!"}</i>
           <h2>{result?.passed ? "Assessment passed" : "Human review required"}</h2>
           <strong>{result?.score}%</strong>
+          <div className="resultScoreGrid"><span><b>{result?.domainScore}%</b>Domain score</span><span><b>{result?.integrityScore}%</b>Integrity</span><span><b>{result?.rankBand}</b>{result?.percentile}th percentile</span></div>
           <p>{result?.passed
             ? "You passed the automated quality threshold. Your identity, credentials, evidence, and risk signals still require a final human decision before you can be listed or apply for projects."
             : "You have not been approved or rejected automatically. A reviewer will inspect your answers, integrity signals, credentials, and identity evidence before deciding whether a retake or further evidence is appropriate."}</p>

@@ -1,19 +1,16 @@
 import { env } from "cloudflare:workers";
-import { getChatGPTUser } from "../../../../chatgpt-auth";
+import { getCurrentUser } from "../../../../../lib/server/current-user";
 import { apiError, audit, database, id, now, notify } from "../../../../../lib/server/trainora-store";
 
 export async function POST(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
     const { id: jobId } = await context.params;
     const body = await request.json() as { coverNote?: string; trainerId?: string };
-    const user = await getChatGPTUser();
+    const user = await getCurrentUser();
     const db = database();
     let trainerId: string | undefined;
-    if (user) {
-      const trainer = await db.prepare(
-        "SELECT id FROM users WHERE email = ? AND role = 'trainer' AND status = 'active'",
-      ).bind(user.email.toLowerCase()).first() as { id: string } | null;
-      trainerId = trainer?.id;
+    if (user?.role === "trainer") {
+      trainerId = user.id;
     } else if (env.DEV_AUTH_BYPASS === "true") {
       trainerId = body.trainerId;
     }

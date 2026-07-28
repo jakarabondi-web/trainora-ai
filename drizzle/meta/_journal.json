@@ -8,6 +8,20 @@
       "when": 1784952398839,
       "tag": "0000_strong_mandroid",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1785000000000,
+      "tag": "0001_job_sources",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1785199076312,
+      "tag": "0002_platform_expansion",
+      "breakpoints": true
     }
   ]
 }
